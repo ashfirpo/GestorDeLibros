@@ -8,16 +8,10 @@ public class ImprimirEnArchivo {
 	
 	public static void actualizarArchivo(String ruta, ArrayList<Libro> vector) throws FileNotFoundException
 	{
-		PrintStream salida = new PrintStream(ruta); //(58)
-		/*int n = vector.size();
-		for (int i=0; i<n; i++) //(59)
-			imprimirEnArchivo.funcion(vector.get(i), salida); //(60)*/
+		PrintStream salida = new PrintStream(ruta);
 		for(Libro l : vector)
-		{
 			salida.println(l.toString());
-		}
 		
-		salida.close();//(61)
+		salida.close();
 	}
-
 }
