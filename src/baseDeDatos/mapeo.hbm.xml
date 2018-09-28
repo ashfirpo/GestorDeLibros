@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="gestorDeLibros.Libro" table="Libro">
+		<id column="ISBN" name="ISBN" type="string" />
+		<property column="titulo" name="titulo" type="string" />
+		<property column="autor" name="autor" type="string" />
+		<property column="editorial" name="editorial" type="string" />
+		<property column="edicion" name="edicion" type="int" />
+		<property column="fechaPublicacion" name="fechaPublicacion" type="int" />
+	</class>
+	
+</hibernate-mapping>
