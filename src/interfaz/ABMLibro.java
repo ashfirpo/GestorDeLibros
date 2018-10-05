@@ -1,6 +1,5 @@
 package interfaz;
 
-import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -10,10 +9,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import java.awt.Insets;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.SystemColor;
 
@@ -30,7 +33,6 @@ public class ABMLibro extends JFrame {
 	private JTextField txtEdicion;
 	private JTextField txtFecha;
 	private ABMLibro ventana;
-	private Font fuente = new Font("Tahoma", Font.PLAIN, 11);
 
 	/**
 	 * Launch the application.
@@ -56,6 +58,22 @@ public class ABMLibro extends JFrame {
 	{}
 	public ABMLibro(Libro libro) {
 		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		setBackground(SystemColor.window);
 		setMinimumSize(new Dimension(650, 200));
 		setPreferredSize(new Dimension(650, 200));
@@ -67,8 +85,7 @@ public class ABMLibro extends JFrame {
 		setBounds(100, 100, 450, 227);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setFont(fuente);
-		contentPane.setBackground(SystemColor.window);
+		contentPane.setBackground(new Color(248, 248, 255));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0, 85, 103, 0, 0};
@@ -83,7 +100,6 @@ public class ABMLibro extends JFrame {
 		gbc_lblIsbn.anchor = GridBagConstraints.SOUTHEAST;
 		gbc_lblIsbn.gridx = 0;
 		gbc_lblIsbn.gridy = 0;
-		lblIsbn.setFont(fuente);
 		contentPane.add(lblIsbn, gbc_lblIsbn);
 		
 		txtISBN = new JTextField();
@@ -94,7 +110,6 @@ public class ABMLibro extends JFrame {
 		gbc_txtISBN.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtISBN.gridx = 1;
 		gbc_txtISBN.gridy = 0;
-		txtISBN.setFont(fuente);
 		txtISBN.setMinimumSize(new Dimension(8, txtISBN.getSize().width));
 		txtISBN.setToolTipText("Campo obligatorio");
 		if(libro!=null)
@@ -111,7 +126,6 @@ public class ABMLibro extends JFrame {
 		gbc_lblTtulo.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTtulo.gridx = 0;
 		gbc_lblTtulo.gridy = 1;
-		lblTtulo.setFont(fuente);
 		contentPane.add(lblTtulo, gbc_lblTtulo);
 		
 		txtTitulo = new JTextField();
@@ -121,7 +135,6 @@ public class ABMLibro extends JFrame {
 		gbc_txtTitulo.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtTitulo.gridx = 1;
 		gbc_txtTitulo.gridy = 1;
-		txtTitulo.setFont(fuente);
 		txtTitulo.setToolTipText("Campo obligatorio");
 		txtTitulo.setMinimumSize(new Dimension(8, txtTitulo.getSize().width));
 		contentPane.add(txtTitulo, gbc_txtTitulo);
@@ -133,7 +146,6 @@ public class ABMLibro extends JFrame {
 		gbc_lblAutor.insets = new Insets(0, 0, 5, 5);
 		gbc_lblAutor.gridx = 0;
 		gbc_lblAutor.gridy = 2;
-		lblAutor.setFont(fuente);
 		contentPane.add(lblAutor, gbc_lblAutor);
 		
 		txtAutor = new JTextField();
@@ -143,7 +155,6 @@ public class ABMLibro extends JFrame {
 		gbc_txtAutor.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtAutor.gridx = 1;
 		gbc_txtAutor.gridy = 2;
-		txtAutor.setFont(fuente);
 		txtAutor.setToolTipText("Campo obligatorio");
 		txtAutor.setMinimumSize(new Dimension(8, txtAutor.getSize().width));
 		contentPane.add(txtAutor, gbc_txtAutor);
@@ -155,7 +166,6 @@ public class ABMLibro extends JFrame {
 		gbc_lblEditorial.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEditorial.gridx = 0;
 		gbc_lblEditorial.gridy = 3;
-		lblEditorial.setFont(fuente);
 		contentPane.add(lblEditorial, gbc_lblEditorial);
 		
 		txtEditorial = new JTextField();
@@ -165,7 +175,6 @@ public class ABMLibro extends JFrame {
 		gbc_txtEditorial.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtEditorial.gridx = 1;
 		gbc_txtEditorial.gridy = 3;
-		txtEditorial.setFont(fuente);
 		txtEditorial.setMinimumSize(new Dimension(8, txtEditorial.getSize().width));
 		contentPane.add(txtEditorial, gbc_txtEditorial);
 		txtEditorial.setColumns(10);
@@ -176,7 +185,6 @@ public class ABMLibro extends JFrame {
 		gbc_lblEdicin.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEdicin.gridx = 0;
 		gbc_lblEdicin.gridy = 4;
-		lblEdicin.setFont(fuente);
 		contentPane.add(lblEdicin, gbc_lblEdicin);
 		
 		txtEdicion = new JTextField();
@@ -186,7 +194,6 @@ public class ABMLibro extends JFrame {
 		gbc_txtEdicion.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtEdicion.gridx = 1;
 		gbc_txtEdicion.gridy = 4;
-		txtEdicion.setFont(fuente);
 		txtEdicion.setToolTipText("En formato de numérico. Por ejemplo: 5");
 		txtEdicion.setMinimumSize(new Dimension(8, txtEdicion.getSize().width));
 		contentPane.add(txtEdicion, gbc_txtEdicion);
@@ -198,7 +205,6 @@ public class ABMLibro extends JFrame {
 		gbc_lblAoDePublicacin.insets = new Insets(0, 0, 5, 5);
 		gbc_lblAoDePublicacin.gridx = 3;
 		gbc_lblAoDePublicacin.gridy = 4;
-		lblAoDePublicacin.setFont(fuente);
 		contentPane.add(lblAoDePublicacin, gbc_lblAoDePublicacin);
 		
 		txtFecha = new JTextField();
@@ -207,7 +213,6 @@ public class ABMLibro extends JFrame {
 		gbc_txtFecha.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtFecha.gridx = 4;
 		gbc_txtFecha.gridy = 4;
-		txtFecha.setFont(fuente);
 		txtFecha.setToolTipText("En formato de numérico. Por ejemplo: 2012");
 		txtFecha.setMinimumSize(new Dimension(8, txtFecha.getSize().width));
 		contentPane.add(txtFecha, gbc_txtFecha);
@@ -225,11 +230,10 @@ public class ABMLibro extends JFrame {
 		});
 		GridBagConstraints gbc_btnGuardar = new GridBagConstraints();
 		gbc_btnGuardar.gridwidth = 2;
-		gbc_btnGuardar.anchor = GridBagConstraints.NORTHEAST;
+		gbc_btnGuardar.anchor = GridBagConstraints.SOUTHEAST;
 		gbc_btnGuardar.insets = new Insets(0, 0, 0, 5);
 		gbc_btnGuardar.gridx = 2;
 		gbc_btnGuardar.gridy = 6;
-		btnGuardar.setFont(fuente);
 		contentPane.add(btnGuardar, gbc_btnGuardar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
@@ -240,10 +244,9 @@ public class ABMLibro extends JFrame {
 			}
 		});
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
-		gbc_btnCancelar.anchor = GridBagConstraints.NORTH;
+		gbc_btnCancelar.anchor = GridBagConstraints.SOUTH;
 		gbc_btnCancelar.gridx = 4;
 		gbc_btnCancelar.gridy = 6;
-		btnCancelar.setFont(fuente);
 		contentPane.add(btnCancelar, gbc_btnCancelar);
 		
 		if(libro==null)
@@ -270,8 +273,6 @@ public class ABMLibro extends JFrame {
 	{
 		JOptionPane mensaje = new JOptionPane();
 		JLabel lbl = new JLabel();
-		lbl.setFont(fuente);
-		mensaje.setFont(fuente);
 		
 		try
 		{

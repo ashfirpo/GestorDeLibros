@@ -217,7 +217,7 @@ public class Libro extends Datos implements Comparator<Libro> {
 		
 		if(filtro.equals("Título"))
 			filtro = "titulo";
-		if(filtro.equals("Autor"))
+		else if(filtro.equals("Autor"))
 			filtro = filtro.toLowerCase();
 		
 		try

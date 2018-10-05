@@ -30,6 +30,9 @@ import java.util.ArrayList;
 import java.awt.SystemColor;
 import java.awt.Dimension;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -51,12 +54,11 @@ public class Inicio extends JFrame {
 	@SuppressWarnings("unused")
 	private Datos db = new Datos();
 	private Inicio ventana;
-	private Font fuente = new Font("Tahoma", Font.PLAIN, 11);
 	String[] columns = new String[]{"ISBN", "Autor", "Título", "Editorial", "Edición", "Año de publicación"};
 	String[][] data = new String[][]{};
 	private JButton btnActualizarTabla;
-	JOptionPane mensaje = new JOptionPane();
-	JLabel lblMensaje = new JLabel();
+	JOptionPane mensaje;
+	JLabel lblMensaje;
 
 	/**
 	 * Launch the application.
@@ -80,15 +82,32 @@ public class Inicio extends JFrame {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Inicio() {
+		setBackground(new Color(255, 255, 204));
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		mensaje = new JOptionPane();
+		lblMensaje = new JLabel();
 		ventana = this;
 		this.setLocationRelativeTo(null);
 		setTitle("Gestor de Libros | Inicio");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 644, 450);
 		contentPane = new JPanel();
-		contentPane.setBackground(SystemColor.window);
+		contentPane.setBackground(new Color(248, 248, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setFont(fuente);
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{68, 114, 344, 0, 0};
@@ -97,16 +116,12 @@ public class Inicio extends JFrame {
 		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		mensaje.setFont(fuente);
-		lblMensaje.setFont(fuente);
-		
 		JLabel lblBuscarPor = new JLabel("Buscar por:");
 		GridBagConstraints gbc_lblBuscarPor = new GridBagConstraints();
 		gbc_lblBuscarPor.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblBuscarPor.insets = new Insets(0, 0, 5, 5);
 		gbc_lblBuscarPor.gridx = 0;
 		gbc_lblBuscarPor.gridy = 0;
-		lblBuscarPor.setFont(fuente);
 		contentPane.add(lblBuscarPor, gbc_lblBuscarPor);
 		
 		comboBox = new JComboBox();
@@ -114,14 +129,13 @@ public class Inicio extends JFrame {
 		comboBox.setBackground(SystemColor.window);
 		comboBox.setOpaque(false);
 		comboBox.setMaximumRowCount(3);
-		comboBox.setBorder(new MatteBorder(1, 1, 1, 1, (Color) SystemColor.control));
+		comboBox.setBorder(new MatteBorder(1, 1, 1, 1, (Color) SystemColor.controlShadow));
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"ISBN", "Autor", "T\u00EDtulo"}));
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
 		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBox.gridx = 1;
 		gbc_comboBox.gridy = 0;
-		comboBox.setFont(fuente);
 		contentPane.add(comboBox, gbc_comboBox);
 		
 		txtBuscar = new JTextField();
@@ -133,7 +147,6 @@ public class Inicio extends JFrame {
 		gbc_txtBuscar.insets = new Insets(0, 0, 5, 5);
 		gbc_txtBuscar.gridx = 2;
 		gbc_txtBuscar.gridy = 0;
-		txtBuscar.setFont(fuente);
 		contentPane.add(txtBuscar, gbc_txtBuscar);
 		txtBuscar.setColumns(10);
 		
@@ -161,10 +174,9 @@ public class Inicio extends JFrame {
 		gbc_btnBuscar.insets = new Insets(0, 0, 5, 0);
 		gbc_btnBuscar.gridx = 3;
 		gbc_btnBuscar.gridy = 0;
-		btnBuscar.setFont(fuente);
 		contentPane.add(btnBuscar, gbc_btnBuscar);
 	
-		btnActualizarTabla = new JButton("Actualizar tabla");
+		btnActualizarTabla = new JButton("Limpiar filtros");
 		btnActualizarTabla.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -176,7 +188,6 @@ public class Inicio extends JFrame {
 		gbc_btnActualizarTabla.insets = new Insets(0, 0, 5, 0);
 		gbc_btnActualizarTabla.gridx = 3;
 		gbc_btnActualizarTabla.gridy = 1;
-		btnActualizarTabla.setFont(fuente);
 		contentPane.add(btnActualizarTabla, gbc_btnActualizarTabla);
 		
 		btnNewButton = new JButton("Agregar");
@@ -219,7 +230,6 @@ public class Inicio extends JFrame {
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton.gridx = 3;
 		gbc_btnNewButton.gridy = 2;
-		btnNewButton.setFont(fuente);
 		contentPane.add(btnNewButton, gbc_btnNewButton);
 		
 		btnModificar = new JButton("Modificar");
@@ -273,7 +283,6 @@ public class Inicio extends JFrame {
 		gbc_btnModificar.insets = new Insets(0, 0, 5, 0);
 		gbc_btnModificar.gridx = 3;
 		gbc_btnModificar.gridy = 3;
-		btnModificar.setFont(fuente);
 		contentPane.add(btnModificar, gbc_btnModificar);
 		
 		btnBorrarLibro = new JButton("Borrar Libro");
@@ -289,7 +298,6 @@ public class Inicio extends JFrame {
 		gbc_btnBorrarLibro.insets = new Insets(0, 0, 5, 0);
 		gbc_btnBorrarLibro.gridx = 3;
 		gbc_btnBorrarLibro.gridy = 4;
-		btnBorrarLibro.setFont(fuente);
 		contentPane.add(btnBorrarLibro, gbc_btnBorrarLibro);
 		
 		cargarTabla();
@@ -299,7 +307,7 @@ public class Inicio extends JFrame {
 	{
 		table = new JTable(data, columns);
 		table.getTableHeader().setBackground(SystemColor.window);
-		table.getTableHeader().setFont(new Font(fuente.getFontName(), Font.BOLD, fuente.getSize()));
+		table.getTableHeader().setFont(new Font(table.getFont().getFontName(), Font.BOLD, table.getFont().getSize()));
 		table.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(192, 192, 192)));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	
@@ -310,7 +318,6 @@ public class Inicio extends JFrame {
 		gbc_table.fill = GridBagConstraints.BOTH;
 		gbc_table.gridx = 0;
 		gbc_table.gridy = 1;
-		table.setFont(fuente);
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.addKeyListener(new KeyAdapter() {
 			@SuppressWarnings("static-access")
