@@ -19,6 +19,8 @@ import java.awt.event.MouseEvent;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.SystemColor;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class ABMLibro extends JFrame {
 	/**
@@ -33,6 +35,9 @@ public class ABMLibro extends JFrame {
 	private JTextField txtEdicion;
 	private JTextField txtFecha;
 	private ABMLibro ventana;
+	private JButton btnGuardar;
+	private JLabel lblFormatoDeIsbn;
+	private boolean isbn=false;
 
 	/**
 	 * Launch the application.
@@ -54,10 +59,8 @@ public class ABMLibro extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ABMLibro()
-	{}
-	public ABMLibro(Libro libro) {
-		
+	public ABMLibro(Libro libro)
+	{
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e1) {
@@ -88,9 +91,9 @@ public class ABMLibro extends JFrame {
 		contentPane.setBackground(new Color(248, 248, 255));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{0, 0, 85, 103, 0, 0};
+		gbl_contentPane.columnWidths = new int[]{0, 0, 85, 103, 103, 0, 0};
 		gbl_contentPane.rowHeights = new int[]{36, 0, 0, 0, 0, 0, 32, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
@@ -103,10 +106,42 @@ public class ABMLibro extends JFrame {
 		contentPane.add(lblIsbn, gbc_lblIsbn);
 		
 		txtISBN = new JTextField();
+		txtISBN.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				String string = txtISBN.getText();
+				if(string.matches("\\d{3}\\-\\d{3}\\-\\d{4}\\-\\d{2}\\-\\d{1}"))
+				{
+					txtISBN.setToolTipText("Campo obligatorio");
+					txtISBN.setBackground(new Color(255, 255, 255));
+					isbn=true;
+				}
+				else if(string.matches("\\d{13}"))
+				{
+					String format = "";
+					format += string.substring(0, 3) + "-";
+					format += string.substring(3, 6) + "-";
+					format += string.substring(6, 10) + "-";
+					format += string.substring(10, 12) + "-";
+					format += string.substring(12, 13);
+					txtISBN.setText(format);
+					txtISBN.setToolTipText("Campo obligatorio");
+					txtISBN.setBackground(new Color(255, 255, 255));
+					isbn=true;
+				}
+				else
+				{
+					//No matchea con nada
+					txtISBN.setToolTipText("El ISBN es incorrecto");
+					txtISBN.setBackground(new Color(255, 102, 102));
+					isbn=false;
+				}
+			}
+		});
 		GridBagConstraints gbc_txtISBN = new GridBagConstraints();
 		gbc_txtISBN.anchor = GridBagConstraints.SOUTH;
-		gbc_txtISBN.gridwidth = 4;
-		gbc_txtISBN.insets = new Insets(0, 0, 5, 0);
+		gbc_txtISBN.gridwidth = 3;
+		gbc_txtISBN.insets = new Insets(0, 0, 5, 5);
 		gbc_txtISBN.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtISBN.gridx = 1;
 		gbc_txtISBN.gridy = 0;
@@ -120,6 +155,15 @@ public class ABMLibro extends JFrame {
 		contentPane.add(txtISBN, gbc_txtISBN);
 		txtISBN.setColumns(10);
 		
+		lblFormatoDeIsbn = new JLabel("Formato de ISBN: xxx-xxx-xxxx-xx-x");
+		GridBagConstraints gbc_lblFormatoDeIsbn = new GridBagConstraints();
+		gbc_lblFormatoDeIsbn.anchor = GridBagConstraints.SOUTH;
+		gbc_lblFormatoDeIsbn.gridwidth = 2;
+		gbc_lblFormatoDeIsbn.insets = new Insets(0, 0, 5, 5);
+		gbc_lblFormatoDeIsbn.gridx = 4;
+		gbc_lblFormatoDeIsbn.gridy = 0;
+		contentPane.add(lblFormatoDeIsbn, gbc_lblFormatoDeIsbn);
+		
 		JLabel lblTtulo = new JLabel("T\u00EDtulo:");
 		GridBagConstraints gbc_lblTtulo = new GridBagConstraints();
 		gbc_lblTtulo.anchor = GridBagConstraints.EAST;
@@ -130,7 +174,7 @@ public class ABMLibro extends JFrame {
 		
 		txtTitulo = new JTextField();
 		GridBagConstraints gbc_txtTitulo = new GridBagConstraints();
-		gbc_txtTitulo.gridwidth = 4;
+		gbc_txtTitulo.gridwidth = 5;
 		gbc_txtTitulo.insets = new Insets(0, 0, 5, 0);
 		gbc_txtTitulo.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtTitulo.gridx = 1;
@@ -150,7 +194,7 @@ public class ABMLibro extends JFrame {
 		
 		txtAutor = new JTextField();
 		GridBagConstraints gbc_txtAutor = new GridBagConstraints();
-		gbc_txtAutor.gridwidth = 4;
+		gbc_txtAutor.gridwidth = 5;
 		gbc_txtAutor.insets = new Insets(0, 0, 5, 0);
 		gbc_txtAutor.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtAutor.gridx = 1;
@@ -170,7 +214,7 @@ public class ABMLibro extends JFrame {
 		
 		txtEditorial = new JTextField();
 		GridBagConstraints gbc_txtEditorial = new GridBagConstraints();
-		gbc_txtEditorial.gridwidth = 4;
+		gbc_txtEditorial.gridwidth = 5;
 		gbc_txtEditorial.insets = new Insets(0, 0, 5, 0);
 		gbc_txtEditorial.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtEditorial.gridx = 1;
@@ -201,6 +245,7 @@ public class ABMLibro extends JFrame {
 		
 		JLabel lblAoDePublicacin = new JLabel("A\u00F1o de publicaci\u00F3n:");
 		GridBagConstraints gbc_lblAoDePublicacin = new GridBagConstraints();
+		gbc_lblAoDePublicacin.gridwidth = 2;
 		gbc_lblAoDePublicacin.anchor = GridBagConstraints.EAST;
 		gbc_lblAoDePublicacin.insets = new Insets(0, 0, 5, 5);
 		gbc_lblAoDePublicacin.gridx = 3;
@@ -211,14 +256,14 @@ public class ABMLibro extends JFrame {
 		GridBagConstraints gbc_txtFecha = new GridBagConstraints();
 		gbc_txtFecha.insets = new Insets(0, 0, 5, 0);
 		gbc_txtFecha.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtFecha.gridx = 4;
+		gbc_txtFecha.gridx = 5;
 		gbc_txtFecha.gridy = 4;
 		txtFecha.setToolTipText("En formato de numérico. Por ejemplo: 2012");
 		txtFecha.setMinimumSize(new Dimension(8, txtFecha.getSize().width));
 		contentPane.add(txtFecha, gbc_txtFecha);
 		txtFecha.setColumns(10);
 		
-		JButton btnGuardar = new JButton("Guardar");
+		btnGuardar = new JButton("Guardar");
 		btnGuardar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -229,7 +274,7 @@ public class ABMLibro extends JFrame {
 			}
 		});
 		GridBagConstraints gbc_btnGuardar = new GridBagConstraints();
-		gbc_btnGuardar.gridwidth = 2;
+		gbc_btnGuardar.gridwidth = 3;
 		gbc_btnGuardar.anchor = GridBagConstraints.SOUTHEAST;
 		gbc_btnGuardar.insets = new Insets(0, 0, 0, 5);
 		gbc_btnGuardar.gridx = 2;
@@ -245,7 +290,7 @@ public class ABMLibro extends JFrame {
 		});
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
 		gbc_btnCancelar.anchor = GridBagConstraints.SOUTH;
-		gbc_btnCancelar.gridx = 4;
+		gbc_btnCancelar.gridx = 5;
 		gbc_btnCancelar.gridy = 6;
 		contentPane.add(btnCancelar, gbc_btnCancelar);
 		
@@ -276,32 +321,40 @@ public class ABMLibro extends JFrame {
 		
 		try
 		{
-			Libro libro = new Libro(txtISBN.getText(), txtAutor.getText(), txtTitulo.getText(), txtEditorial.getText(), Integer.parseInt(txtEdicion.getText()),
-				Integer.parseInt(txtFecha.getText()));
-		
-			if(esNuevo)
+			if(isbn==true)
 			{
-				String res = libro.agregarLibro(libro);
-				lbl.setText(res);
-				if(res.contains("correctamente"))
+				Libro libro = new Libro(txtISBN.getText(), txtAutor.getText(), txtTitulo.getText(), txtEditorial.getText(), Integer.parseInt(txtEdicion.getText()),
+					Integer.parseInt(txtFecha.getText()));
+			
+				if(esNuevo)
 				{
-					mensaje.showMessageDialog(ventana, lbl, "Libro creado", JOptionPane.INFORMATION_MESSAGE);
-					this.dispose();
+					String res = libro.agregarLibro(libro);
+					lbl.setText(res);
+					if(res.contains("correctamente"))
+					{
+						mensaje.showMessageDialog(ventana, lbl, "Libro creado", JOptionPane.INFORMATION_MESSAGE);
+						this.dispose();
+					}
+					else
+						mensaje.showMessageDialog(ventana, lbl, "Error en la creación del libro", JOptionPane.ERROR_MESSAGE);
 				}
 				else
-					mensaje.showMessageDialog(ventana, lbl, "Error en la creación del libro", JOptionPane.ERROR_MESSAGE);
+				{
+					String res = libro.modificarLibro(libro);
+					lbl.setText(res);
+					if(res.contains("correctamente"))
+					{
+						mensaje.showMessageDialog(ventana, lbl, "Libro modificado", JOptionPane.INFORMATION_MESSAGE);
+						this.dispose();
+					}
+					else
+						mensaje.showMessageDialog(ventana, lbl, "Error en la modificación del libro", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			else
 			{
-				String res = libro.modificarLibro(libro);
-				lbl.setText(res);
-				if(res.contains("correctamente"))
-				{
-					mensaje.showMessageDialog(ventana, lbl, "Libro modificado", JOptionPane.INFORMATION_MESSAGE);
-					this.dispose();
-				}
-				else
-					mensaje.showMessageDialog(ventana, lbl, "Error en la modificación del libro", JOptionPane.ERROR_MESSAGE);
+				lbl.setText("Revisa que el valor del ISBN sea correcto.");
+				mensaje.showMessageDialog(ventana, lbl, "Error en los campos", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		catch(Exception e)
