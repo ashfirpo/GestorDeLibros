@@ -69,7 +69,7 @@ public class Inicio extends JFrame {
 				try {
 					Inicio frame = new Inicio();
 					frame.setVisible(true);
-					frame.setLocationRelativeTo(null);
+					frame.setLocationRelativeTo(null); //Para que la ubicación de la ventana de incio esté centrada
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -82,6 +82,7 @@ public class Inicio extends JFrame {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Inicio() {
+		setMinimumSize(new Dimension(644, 450));
 		setBackground(new Color(255, 255, 204));
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -98,8 +99,12 @@ public class Inicio extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		//Cuadro de diálogo para mensajes de error
 		mensaje = new JOptionPane();
 		lblMensaje = new JLabel();
+		
+		//Ventana actual
 		ventana = this;
 		this.setLocationRelativeTo(null);
 		setTitle("Gestor de Libros | Inicio");
@@ -124,6 +129,7 @@ public class Inicio extends JFrame {
 		gbc_lblBuscarPor.gridy = 0;
 		contentPane.add(lblBuscarPor, gbc_lblBuscarPor);
 		
+		//Selector de filtros para buscar
 		comboBox = new JComboBox();
 		comboBox.setToolTipText("ISBN: coincidencia exacta");
 		comboBox.setBackground(SystemColor.window);
@@ -138,7 +144,18 @@ public class Inicio extends JFrame {
 		gbc_comboBox.gridy = 0;
 		contentPane.add(comboBox, gbc_comboBox);
 		
+		//Campo para buscar el filtro
 		txtBuscar = new JTextField();
+		txtBuscar.addKeyListener(new KeyAdapter() {
+			@SuppressWarnings("static-access")
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == e.VK_ENTER)
+				{
+					buscar();
+				}
+			}
+		});
 		txtBuscar.setMinimumSize(new Dimension(8, 20));
 		txtBuscar.setBorder(new MatteBorder(1, 1, 1, 1, (Color) SystemColor.controlShadow));
 		txtBuscar.setPreferredSize(new Dimension(8, 20));
@@ -150,22 +167,14 @@ public class Inicio extends JFrame {
 		contentPane.add(txtBuscar, gbc_txtBuscar);
 		txtBuscar.setColumns(10);
 		
+		//Botón de busscar
 		btnBuscar = new JButton("Buscar");
+		//Le agregamos un evento para que busque cuando se le hace click al botón
 		btnBuscar.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("static-access")
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String filtro = comboBox.getSelectedItem().toString();
-				if(txtBuscar.getText().isEmpty())
-				{
-					lblMensaje.setText("El campo de búsqueda está vacío.");
-					mensaje.showMessageDialog(ventana, lblMensaje, "", JOptionPane.INFORMATION_MESSAGE);
-				}
-				else
-				{
-					cargarDatos(Libro.buscarFiltro(filtro, txtBuscar.getText()));
-					txtBuscar.setText("");
-				}
+				buscar();
 			}
 		});
 		btnBuscar.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -176,6 +185,7 @@ public class Inicio extends JFrame {
 		gbc_btnBuscar.gridy = 0;
 		contentPane.add(btnBuscar, gbc_btnBuscar);
 	
+		//Botón para limpiar los resultados de la grilla cuando se aplican filtros (muestra todos los libros)
 		btnActualizarTabla = new JButton("Limpiar filtros");
 		btnActualizarTabla.addMouseListener(new MouseAdapter() {
 			@Override
@@ -190,12 +200,13 @@ public class Inicio extends JFrame {
 		gbc_btnActualizarTabla.gridy = 1;
 		contentPane.add(btnActualizarTabla, gbc_btnActualizarTabla);
 		
+		//Botón para agregar un libro nuevo
 		btnNewButton = new JButton("Agregar");
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ABMLibro abm = new ABMLibro(null);
+				ABMLibro abm = new ABMLibro(null); //Muestra la ventana del ABM de libros
 				abm.show(true);
 				abm.setLocationRelativeTo(null);
 				abm.addWindowListener(new WindowListener() {
@@ -217,7 +228,7 @@ public class Inicio extends JFrame {
 					
 					@Override
 					public void windowClosed(WindowEvent e) {
-						cargarDatos(Libro.cargarLibros());
+						cargarDatos(Libro.cargarLibros()); //Cuando se cierra el ABM se actualiza la grilla de libros
 					}
 					
 					@Override
@@ -232,23 +243,27 @@ public class Inicio extends JFrame {
 		gbc_btnNewButton.gridy = 2;
 		contentPane.add(btnNewButton, gbc_btnNewButton);
 		
+		//Botón para modificar libros
 		btnModificar = new JButton("Modificar");
+		//Para modificar un libro, hay que seleccionar uno de la grilla primero
 		btnModificar.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings({ "static-access", "deprecation" })
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int index = table.getSelectedRow();
+				int index = table.getSelectedRow(); //Tomamos el registro de la grilla para modificar
 				if(index==-1)
 				{
+					//Si no hay ningún libro seleccionado, se informa
 					lblMensaje.setText("Selecciona un libro de la grilla para modificar.");
 					mensaje.showMessageDialog(ventana, lblMensaje, "Libro no seleccionado", JOptionPane.ERROR_MESSAGE);
 				}
 				else
 				{
+					//Se toman los valores del libro seleccionado desde la grilla
 					Libro libro = new Libro(table.getValueAt(index, 0).toString(), table.getValueAt(index, 1).toString(), table.getValueAt(index, 2).toString(),
 									table.getValueAt(index, 3).toString(), Integer.parseInt(table.getValueAt(index, 4).toString()),
 									Integer.parseInt(table.getValueAt(index,5).toString()));
-					ABMLibro abm = new ABMLibro(libro);
+					ABMLibro abm = new ABMLibro(libro); //Se abre el ABM para modificar el libro
 					abm.show(true);
 					abm.setLocationRelativeTo(null);
 					abm.addWindowListener(new WindowListener() {
@@ -270,7 +285,7 @@ public class Inicio extends JFrame {
 						
 						@Override
 						public void windowClosed(WindowEvent e) {
-							cargarDatos(Libro.cargarLibros());
+							cargarDatos(Libro.cargarLibros()); //Cuando se cierra el ABM, se actualiza la grilla de libros
 						}
 						
 						@Override
@@ -285,9 +300,9 @@ public class Inicio extends JFrame {
 		gbc_btnModificar.gridy = 3;
 		contentPane.add(btnModificar, gbc_btnModificar);
 		
+		//Botón para borrar libros
 		btnBorrarLibro = new JButton("Borrar Libro");
 		btnBorrarLibro.addMouseListener(new MouseAdapter() {
-			@SuppressWarnings({ "static-access" })
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				eliminarLibro();
@@ -300,12 +315,18 @@ public class Inicio extends JFrame {
 		gbc_btnBorrarLibro.gridy = 4;
 		contentPane.add(btnBorrarLibro, gbc_btnBorrarLibro);
 		
+		//Carga la grilla con todos los libros existentes
 		cargarTabla();
 	}
 	
+	@SuppressWarnings("serial")
 	public void cargarTabla()
 	{
-		table = new JTable(data, columns);
+		//Grilla de libros
+		table = new JTable(data, columns){
+			public boolean isCellEditable(int row, int column){  
+	        return false;  
+	    }};
 		table.getTableHeader().setBackground(SystemColor.window);
 		table.getTableHeader().setFont(new Font(table.getFont().getFontName(), Font.BOLD, table.getFont().getSize()));
 		table.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(192, 192, 192)));
@@ -323,34 +344,52 @@ public class Inicio extends JFrame {
 			@SuppressWarnings("static-access")
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == e.VK_DELETE)
+				if(e.getKeyCode() == e.VK_DELETE) //Si estando sobre un registro de la grilla, se presiona la tecla Suprimir, elimina el libro
 					eliminarLibro();
 			}
 		});
 		scrollPane.setBackground(SystemColor.control);
 		scrollPane.setBorder(new MatteBorder(1, 1, 1, 1, (Color) SystemColor.controlShadow));
 		contentPane.add(scrollPane, gbc_table);
-		cargarDatos(Libro.cargarLibros());
+		cargarDatos(Libro.cargarLibros()); //Carga la grilla de libros
 	}
 	
 	@SuppressWarnings("static-access")
 	public void eliminarLibro()
 	{
-		int index = table.getSelectedRow();
-		if(index==-1)
+		int index = table.getSelectedRow(); //Se toma el índice del registro a borrar seleccionado en la grilla
+		if(index==-1) //Si no hay nada seleccionado, lo informa
 		{
 			lblMensaje.setText("Selecciona un libro de la grilla para borrar.");
 			mensaje.showMessageDialog(ventana, lblMensaje, "Libro no seleccionado", JOptionPane.ERROR_MESSAGE);
 		}
 		else
 		{
+			//Toma los datos del libro desde la grilla
 			Libro libro = new Libro(table.getValueAt(index, 0).toString(), table.getValueAt(index, 1).toString(), table.getValueAt(index, 2).toString(),
 							table.getValueAt(index, 3).toString(), Integer.parseInt(table.getValueAt(index, 4).toString()),
 							Integer.parseInt(table.getValueAt(index,5).toString()));
+			//Pide confirmación del usuario
 			lblMensaje.setText("Se va a eliminar: " + libro.toString() + " ¿Continuar?");
 			if(mensaje.showConfirmDialog(ventana, lblMensaje, "Eliminar libro", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
-				libro.borrarLibro(libro);
-			cargarDatos(Libro.cargarLibros());
+				libro.borrarLibro(libro); //Se elimina el libro
+			cargarDatos(Libro.cargarLibros()); //Se actualiza la grilla de libros
+		}
+	}
+	
+	@SuppressWarnings("static-access")
+	public void buscar()
+	{
+		String filtro = comboBox.getSelectedItem().toString(); //Obtenemos el filtro aplicado desde el selector
+		if(txtBuscar.getText().isEmpty()) //Si el campo de búsqueda está vacío, lo informa
+		{
+			lblMensaje.setText("El campo de búsqueda está vacío.");
+			mensaje.showMessageDialog(ventana, lblMensaje, "", JOptionPane.INFORMATION_MESSAGE);
+		}
+		else
+		{
+			cargarDatos(Libro.buscarFiltro(filtro, txtBuscar.getText())); //Busca el libro con el filtro aplicado
+			txtBuscar.setText(""); //Limpia el campo de búsqueda
 		}
 	}
 	
@@ -361,7 +400,7 @@ public class Inicio extends JFrame {
 		{
 			int i=0;
 			data = new String[source.size()][6];
-			for(Libro l : source)
+			for(Libro l : source) //Llena la grilla de libros
 			{
 				String[] libro = new String[]{l.getISBN(), l.getAutor(), l.getTitulo(), l.getEditorial(), String.valueOf(l.getEdicion()),
 									String.valueOf(l.getFechaPublicacion())}; 
@@ -372,7 +411,7 @@ public class Inicio extends JFrame {
 			}
 			table.setModel(new DefaultTableModel(data, columns));
 		}
-		else
+		else //Si no hay registros de libros, lo informa
 		{
 			lblMensaje.setText("No se encontraron registros.");
 			mensaje.showMessageDialog(ventana, lblMensaje, "", JOptionPane.INFORMATION_MESSAGE);

@@ -14,4 +14,9 @@
 		<property column="fechaPublicacion" name="fechaPublicacion" type="int" />
 	</class>
 	
+	<class name="gestorDeLibros.Usuario" table="Usuarios">
+		<id column="user" name="user" type="string" ></id>
+		<property column="pass" name="pass" type="string" />
+	</class>
+	
 </hibernate-mapping>
