@@ -10,6 +10,7 @@ import java.awt.Insets;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import javax.swing.UIManager;
@@ -25,7 +26,6 @@ import javax.swing.border.MatteBorder;
 import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.Toolkit;
 
 public class Login {
 
@@ -75,7 +75,8 @@ public class Login {
 	private void initialize() {
 		//Seteamos las propiedades del frame principal de Login
 		frmIniciarSesin = new JFrame();
-		frmIniciarSesin.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\aaash\\Desktop\\if_lock_511942.ico"));
+		ImageIcon img = new ImageIcon("./Login.png");
+		frmIniciarSesin.setIconImage(img.getImage());
 		frmIniciarSesin.setBackground(new Color(248, 248, 255));
 		frmIniciarSesin.setType(Type.POPUP);
 		frmIniciarSesin.setResizable(false);

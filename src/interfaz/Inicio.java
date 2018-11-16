@@ -17,6 +17,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
 import baseDeDatos.Datos;
@@ -110,6 +111,8 @@ public class Inicio extends JFrame {
 		setTitle("Gestor de Libros | Inicio");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 644, 450);
+		ImageIcon img = new ImageIcon("./Libro.png");
+		this.setIconImage(img.getImage());
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(248, 248, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
