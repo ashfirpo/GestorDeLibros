@@ -1,4 +1,4 @@
-package gestorDeLibros;
+package baseDeDatos;
 
 public class Usuario {
 
